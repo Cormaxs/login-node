@@ -1,0 +1,38 @@
+*{
+ margin: 0; padding: 0; box-sizing: border-box;   
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+:root{
+    --fondo:linear-gradient(135deg, 
+    #f8f3f3,       /* Gris */
+    #d6cfffb7,       /* Púrpura claro */
+    #bcddffa0,       /* Azul claro */
+    #f8f3f3);
+    --titulos:#2d5071;
+    --label:#454444;
+    --input:#777777;
+    --btn:#ffffff;
+    --btnNormal:#2566f1;
+    --btnSombra:#2565f17d;
+}
+
+h1{
+    font-size: clamp(25px, 5vw, 30px);
+    
+    color: var(--titulos);
+}
+label{
+    font-size: clamp(16px, 5vw, 18px);
+    color: var(--label);
+    font-weight: 600;
+}
+input{
+    font-size: clamp(14px, 5vw, 16px);
+    color: var(--input);
+}
+
+button{
+    color:var(--btn);
+    font-size: clamp(16px, 5vw, 18px);
+    font-weight: bold;
+}

@@ -1,0 +1,13 @@
+button{
+    transition: background-color ease-in-out .3s;
+}
+a{
+    transition: color ease-in-out .3s;
+}
+button:hover{
+    background-color: var(--btnSombra);
+}
+
+a:hover{
+    color: var(--btnSombra) ;
+}
