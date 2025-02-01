@@ -1,6 +1,25 @@
 import mongoose from "mongoose"
 
  const userSchema = new mongoose.Schema({
+      idCreacion:{
+        type: String, 
+        require: false
+      },
+  name:{
+      type:String,
+      require:true,
+      unique:false
+    },
+    lastName:{
+      type:String,
+      require:true,
+      unique:false
+    },
+    numberPhone:{
+      type:Number,
+      require:true,
+      unique:false
+    },
     email: {
         type: String,
         required: true,  // El email es obligatorio
@@ -12,10 +31,14 @@ import mongoose from "mongoose"
         required: true,  // La contraseña es obligatoria
         minlength: 6     // La contraseña debe tener al menos 6 caracteres
       },
+      cuentaVerificada:{
+        verificaca: Boolean
+      },
       createdAt: {
         type: Date,
         default: Date.now  // Fecha de creación por defecto
       }
+      
 });
 // Crear el modelo basado en el esquema
 const user = mongoose.model('user', userSchema, 'usuarios');

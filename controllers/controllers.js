@@ -1,19 +1,18 @@
 import { body, validationResult } from 'express-validator';
-import {loginServices} from '../services/crearUser.js';
+import {loginServices, verificarCuenta, verificarCuentaId} from '../services/crearUser.js';
+
 
 //middleware
 export const validarUsuario = [
-    // Validar que el email sea válido
+    body('name').isLength({min:3, max: 30}).withMessage('la contraseña debe tener un minimo de 3 letras y un maximo de 30'),
+    body('lastName').isLength({min:3, max: 30}).withMessage('la contraseña debe tener un minimo de 3 letras y un maximo de 30'),
     body('Email').isEmail().withMessage('El correo no es válido'),
-
-    // Validar la contraseña con requisitos de seguridad
     body('password')
         .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres')
         .matches(/[A-Z]/).withMessage('La contraseña debe contener al menos una letra mayúscula')
         .matches(/[0-9]/).withMessage('La contraseña debe contener al menos un número')
         .matches(/[\W_]/).withMessage('La contraseña debe contener al menos un carácter especial'),
 
-    // Middleware para manejar errores
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -23,11 +22,20 @@ export const validarUsuario = [
     }
 ];
 
-
+//mando a services para crear el user
 export async function loginControllers(datos){
-   // console.log('controllers', datos.Email, datos.password)
     const services = await loginServices(datos);
-   // console.log(services);
-   //console.log("services", services);
    return services;
+}
+
+//enviar correo verificacion services
+export async function envCorreo(user){
+   const verificar = await verificarCuenta(user);
+   return verificar;
+}
+
+//verificar cuenta id services
+export async function verificarCuentaid(id){
+    const verificar = await verificarCuentaId(id);
+    return verificar;
 }

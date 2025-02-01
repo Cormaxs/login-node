@@ -82,11 +82,6 @@ Para iniciar el servidor, usa el siguiente comando:
 npm start
 ```
 
-Si el proyecto está configurado con `nodemon`, usa:
-
-```bash
-npm run dev
-```
 
 El servidor debería estar corriendo en `http://localhost:3000/` (o el puerto definido en tu configuración).
 
@@ -95,7 +90,7 @@ El servidor debería estar corriendo en `http://localhost:3000/` (o el puerto de
 ## 📂 Estructura del Proyecto
 
 ```
-📦 tu-repositorio
+📦 Login-node
  ┣ 📂 config
  ┣ 📂 controllers
  ┣ 📂 models
@@ -109,13 +104,15 @@ El servidor debería estar corriendo en `http://localhost:3000/` (o el puerto de
  ┣ 📜 package-lock.json
  ┣ 📜 .env
 ```
-
+- **`config/`**: Conexion a la base de datos.
 - **`controllers/`**: Lógica de controladores.
 - **`models/`**: Modelos de la base de datos.
+- **`public/`**: Archivos css estaticos.
+- **`repositories/`**: Interactua con la base de datos.
 - **`routes/`**: Definición de rutas.
 - **`services/`**: Servicios que interactúan con los controladores.
 - **`views/`**: Archivos de vistas para el frontend.
-- **`server.js`**: Archivo principal del servidor.
+- **`app.js`**: Archivo principal del servidor.
 - **`.env`**: Configuración de variables de entorno.
 
 ---
@@ -126,14 +123,14 @@ El servidor debería estar corriendo en `http://localhost:3000/` (o el puerto de
 - **Express.js** - Framework para Node.js.
 - **MongoDB** - Base de datos NoSQL.
 - **Mongoose** - ODM para MongoDB.
-- **EJS/Pug/Handlebars** - Para las vistas.
+- **express-ejs-layouts** - Para layouts.
+- **middleware** - 
 - **bcryptjs** - Para encriptar contraseñas.
 - **express-validator** - Validación de formularios.
 
 ---
 
-## 📞 Contacto
-Si tienes alguna duda o sugerencia, contáctame en **[tuemail@example.com](mailto:tuemail@example.com)** o visita mi perfil en **[GitHub](https://github.com/tuusuario)**.
+
 
 
 
