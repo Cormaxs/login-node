@@ -4,8 +4,6 @@ import {loginServices, verificarCuenta, verificarCuentaId} from '../services/cre
 
 //middleware
 export const validarUsuario = [
-    body('name').isLength({min:3, max: 30}).withMessage('la contraseña debe tener un minimo de 3 letras y un maximo de 30'),
-    body('lastName').isLength({min:3, max: 30}).withMessage('la contraseña debe tener un minimo de 3 letras y un maximo de 30'),
     body('Email').isEmail().withMessage('El correo no es válido'),
     body('password')
         .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres')
