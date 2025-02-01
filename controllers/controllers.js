@@ -25,7 +25,9 @@ export const validarUsuario = [
 
 
 export async function loginControllers(datos){
-    console.log('controllers', datos.Email, datos.password)
-    const services = loginServices(datos);
-    console.log("respuesta services desde controllers", services );
+   // console.log('controllers', datos.Email, datos.password)
+    const services = await loginServices(datos);
+   // console.log(services);
+   //console.log("services", services);
+   return services;
 }

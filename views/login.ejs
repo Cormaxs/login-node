@@ -14,7 +14,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/1690643591twitter-x-logo-png.webp/2000px-1690643591twitter-x-logo-png.webp.png" alt="">
         <article class="login">
             <h1>LOGIN</h1>
-            <form action="/login" method="POST" class="form-login">
+            <form action="/login" method="POST" class="form-login" id="formulario">
                 <label for="Email">E-mail</label>
                 <input type="text" id="Email" name="Email" placeholder="E-mail" required>
 
@@ -28,5 +28,69 @@
         </article>
     </section>
     
-</body>
+</body><!--
+<script >
+  document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("formulario");
+
+    formulario.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Evita que el formulario se envíe y recargue la página
+
+       // console.log("Formulario interceptado");  Verifica si el evento se dispara
+
+        const formData = new FormData(formulario);
+        const datos = Object.fromEntries(formData.entries()); // Convierte FormData en objeto
+
+         //console.log("Datos enviados:", datos); Verifica los datos antes de enviarlos
+
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            });
+
+            //console.log("Respuesta recibida:", response);  Verifica si el backend responde
+
+            const result = await response.json();
+            console.log("Resultado del servidor:", result); // Verifica el contenido de la respuesta
+            
+            result.errors.forEach(error => {
+            console.log(error.msg); // Muestra cada mensaje de error
+                                    });
+
+            if (!response.ok) {
+                mostrarErrores(result.errors);
+                return;
+            }
+
+            alert("Login exitoso");
+            window.location.href = "/login"; // Redirigir si el login es exitoso
+
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        }
+    });
+
+    function mostrarErrores(errors) {
+        const errorContainer = document.getElementById("errores");
+        errorContainer.innerHTML = ""; // Limpiar errores anteriores
+
+        if (!errors || errors.length === 0) {
+            console.log("No hay errores que mostrar");
+            return;
+        }
+
+        errors.forEach(err => {
+            const div = document.createElement("div");
+            div.textContent = err.msg;
+            div.style.color = "red";
+            errorContainer.appendChild(div);
+        });
+
+        console.log("Errores mostrados:", errors);
+    }
+});
+
+</script>-->
 </html>

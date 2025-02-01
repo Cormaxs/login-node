@@ -1,33 +1,140 @@
 # Nombre del Proyecto
-El proyecto es un Login con nodejs y mongodb, usando la arquitectura MVC (Modelo Vista Controlador).
 
-# Recorrido de los datos
-Empieza renderizando la plantilla inicio desde views, nos redirigimos a la plantilla login que nos devuelve un formulario.
-Al completar el formulario manda a la ruta login(post) la cual accede al middleware en controllers, una ves verificado los datos, mando a controllers, de ahi paso los datos a servicios para llamar a repositories y guardarlo
+Este proyecto es un sistema de Login utilizando **Node.js** y **MongoDB**, basado en la arquitectura **MVC** (Modelo-Vista-Controlador).
 
-# Instrucciones para la Instalación
+---
 
-## Requisitos
+## 📌 Recorrido de los Datos
 
-Este proyecto requiere [Node.js](https://nodejs.org/) para su ejecución. A continuación te indicamos cómo instalarlo.
+1. **Renderizado de la plantilla inicial** desde `views`.
+2. **Redirección a la plantilla de Login**, donde se muestra un formulario.
+3. **Envío del formulario** a la ruta `/login` con método `POST`.
+4. **Paso por el Middleware en `controllers`** para validar los datos.
+5. **Si los datos son correctos**, se envían a `controllers`, que los pasa a `services`.
+6. **`services` llama a `repositories`**, donde se guardan los datos en la base de datos.
 
-### 1. Verificar si Node.js está instalado
+---
 
-Abre una terminal (CMD, PowerShell, o terminal de tu preferencia) y ejecuta el siguiente comando : 'node -v' para verificar si ya tienes Node.js 
+## ⚙️ Instrucciones para la Instalación
 
-# Si Node.js no está instalado
+### 📌 Requisitos
 
-## En windows
-Ve a la página oficial de Node.js: https://nodejs.org/ descargarlo y volver a verificar si se instalo correctamente
+Este proyecto requiere [Node.js](https://nodejs.org/) para su ejecución. Sigue los pasos a continuación para instalarlo.
 
-# Instrucciones para Instalar Dependencias
+#### **1. Verificar si Node.js está instalado**
 
-Para instalar las dependencias de este proyecto, sigue estos pasos:
-
-### 1. Clona el repositorio
-
-Si aún no tienes el repositorio en tu máquina, clónalo utilizando el siguiente comando:
+Abre una terminal (CMD, PowerShell o cualquier terminal de tu preferencia) y ejecuta:
 
 ```bash
-git clone https://github.com/tuusuario/tu-repositorio.git
+node -v
+```
+
+Si Node.js está instalado, verás la versión. Si no lo está, sigue el siguiente paso.
+
+#### **2. Instalar Node.js (si no está instalado)**
+
+- **Windows:** Descarga e instala Node.js desde [aquí](https://nodejs.org/).
+- **Linux/macOS:** Usa el siguiente comando para instalarlo con `nvm` (Node Version Manager):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+source ~/.bashrc
+nvm install node
+```
+
+Después de instalarlo, verifica nuevamente ejecutando `node -v`.
+
+---
+
+## 📦 Instalación de Dependencias
+
+### 1️⃣ Clonar el Repositorio
+
+Si aún no tienes el proyecto en tu máquina, clónalo con:
+
+```bash
+git clone git@github.com:Cormaxs/login-node.git
+```
+
+### 2️⃣ Acceder al Proyecto
+
+```bash
+cd login-node
+```
+
+### 3️⃣ Instalar Dependencias
+
+Ejecuta el siguiente comando dentro del directorio del proyecto:
+
+```bash
+npm install
+```
+
+Este comando instalará automáticamente todas las dependencias necesarias según el archivo `package.json`.
+
+---
+
+## 🚀 Ejecución del Proyecto
+
+Para iniciar el servidor, usa el siguiente comando:
+
+```bash
+npm start
+```
+
+Si el proyecto está configurado con `nodemon`, usa:
+
+```bash
+npm run dev
+```
+
+El servidor debería estar corriendo en `http://localhost:3000/` (o el puerto definido en tu configuración).
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+📦 tu-repositorio
+ ┣ 📂 config
+ ┣ 📂 controllers
+ ┣ 📂 models
+ ┣ 📂 public
+ ┣ 📂 repositories
+ ┣ 📂 routes
+ ┣ 📂 services
+ ┣ 📂 views
+ ┣ 📜 app.js
+ ┣ 📜 package.json
+ ┣ 📜 package-lock.json
+ ┣ 📜 .env
+```
+
+- **`controllers/`**: Lógica de controladores.
+- **`models/`**: Modelos de la base de datos.
+- **`routes/`**: Definición de rutas.
+- **`services/`**: Servicios que interactúan con los controladores.
+- **`views/`**: Archivos de vistas para el frontend.
+- **`server.js`**: Archivo principal del servidor.
+- **`.env`**: Configuración de variables de entorno.
+
+---
+
+## 🛠 Tecnologías Usadas
+
+- **Node.js** - Entorno de ejecución.
+- **Express.js** - Framework para Node.js.
+- **MongoDB** - Base de datos NoSQL.
+- **Mongoose** - ODM para MongoDB.
+- **EJS/Pug/Handlebars** - Para las vistas.
+- **bcryptjs** - Para encriptar contraseñas.
+- **express-validator** - Validación de formularios.
+
+---
+
+## 📞 Contacto
+Si tienes alguna duda o sugerencia, contáctame en **[tuemail@example.com](mailto:tuemail@example.com)** o visita mi perfil en **[GitHub](https://github.com/tuusuario)**.
+
+
+
 
