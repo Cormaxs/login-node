@@ -28,8 +28,10 @@ router.get('/recover-password', (req, res) => {
 
 router.post('/login', validarUsuario,  async (req, res)=>{
   const crearUser =  await loginControllers(req.body);
-  if(crearUser){
-    await envCorreo(req.body);
+ // console.log(crearUser)
+  if(crearUser !== null){
+    const id =  crearUser._id.toString();
+    await envCorreo(crearUser);
     res.redirect("./login?cuenta creada con exito");
   }else{
     res.redirect("./login?El correo ya esta registrado, intente de nuevo");

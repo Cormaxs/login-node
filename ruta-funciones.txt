@@ -1,0 +1,5 @@
+
+routes -> define las rutas de la aplicacion
+controllers-> contiene logica para delegrar tareas a otros lados( services, models, etc)
+services-> todo lo relacionado con la base de datos como sanitizar datos, actualizar los datos, cargar, etc
+views-> contiene las vistas html

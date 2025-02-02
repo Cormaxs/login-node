@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 export async function enviarCorreoIniciarSesion(user) {
+    const id = user._id.toString();
     const config = {
         host: 'mail.proyectosarg.com',
         port: 465,
@@ -10,20 +11,21 @@ export async function enviarCorreoIniciarSesion(user) {
             pass: 'D#]_h@;E3_eG' // Usa una contraseña de aplicación
         }
     };
+const mensaje = {
+    from: 'soportetecnico@proyectosarg.com',
+    to: user.email,
+    subject: 'Registro de cuenta',
+    html: `
+        <h1>Bienvenido ${user.name} ${user.lastName}</h1>
+        <p>Para verificar su cuenta haga click en el siguiente enlace:</p>
+        <a href="https://login-node-tbw8.onrender.com/verificar/${encodeURIComponent(id)}" target="_blank">
+            Verificar cuenta
+        </a>
+        <p>O copiar y pegar el siguiente enlace en tu navegador:</p>
+        <p><b>https://login-node-tbw8.onrender.com/verificar/${encodeURIComponent(id)}</b></p>
+    `
+};
 
-    const mensaje = {
-        from: 'soportetecnico@proyectosarg.com',
-        to: user.Email,
-        subject: 'Registro de cuenta',
-        html: `
-            <h2>Bienvenido ${user.name} ${user.lastname} </h2>
-            <p>Usted se a registrado en el proyecto de login con node js.</p>
-            <p>Para verificar su cuenta haga click en el siguiente enlace</p>
-            <a href="https://www.ejemplo.com/login" target="_blank">Verificar cuenta</a>
-            <p>O copiar y pegar el siguiente enlace en tu navegador:</p>
-            <p><b>https://www.ejemplo.com/login</b></p>
-        `
-    };
 
     const transport = nodemailer.createTransport(config);
 

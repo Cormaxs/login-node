@@ -15,7 +15,7 @@ export async function crearUser(datos) {
                 email: datos.Email, 
                 password: datos.password });
             const usuarioGuardado = await nuevoUsuario.save();
-            return true;
+            return usuarioGuardado;
         }
     } catch (error) {
         return { success: false, message: "Error en la creación del usuario." };
