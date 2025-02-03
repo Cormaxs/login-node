@@ -14,6 +14,9 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/1690643591twitter-x-logo-png.webp/2000px-1690643591twitter-x-logo-png.webp.png" alt="">
         <article class="login">
             <h1>LOGIN</h1>
+            <ol id="errores">
+
+            </ol>
             <form action="/login" method="POST" class="form-login" id="formulario">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Name" required>
@@ -30,29 +33,37 @@
                 
                 <label for="numberPhone">Number Phone</label>
                 <input type="number" id="numberPhone" name="numberPhone" placeholder="Number phone" required>
-
+                
+                
+                <div id="cargando" style="display:none;">Cargando...</div>
                 <button type="submit" id="login-btn">Login</button>
+                
 
-                <a href="">¿Olvidaste tu contraseña?</a>
-                <a href="">Sign Up</a>
+
+                <a href="/recover-password">¿Olvidaste tu contraseña?</a>
+                <a href="/sign-in">Sign Up</a>
             </form>
+            
         </article>
     </section>
     
-</body><!--
+</body>
 <script >
-  document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     const formulario = document.getElementById("formulario");
 
-    formulario.addEventListener("submit", async function (event) {
-        event.preventDefault(); // Evita que el formulario se envíe y recargue la página
+    formulario.removeEventListener("submit", manejarSubmit);
+    formulario.addEventListener("submit", manejarSubmit);
 
-       // console.log("Formulario interceptado");  Verifica si el evento se dispara
+    async function manejarSubmit(event) {
+        event.preventDefault(); // Evita el envío normal del formulario
+
+        // Muestra el indicador de carga
+        const cargando = document.getElementById("cargando");
+        cargando.style.display = "block";
 
         const formData = new FormData(formulario);
-        const datos = Object.fromEntries(formData.entries()); // Convierte FormData en objeto
-
-         //console.log("Datos enviados:", datos); Verifica los datos antes de enviarlos
+        const datos = Object.fromEntries(formData.entries()); 
 
         try {
             const response = await fetch("/login", {
@@ -61,47 +72,48 @@
                 body: JSON.stringify(datos)
             });
 
-            //console.log("Respuesta recibida:", response);  Verifica si el backend responde
-
             const result = await response.json();
-            console.log("Resultado del servidor:", result); // Verifica el contenido de la respuesta
             
-            result.errors.forEach(error => {
-            console.log(error.msg); // Muestra cada mensaje de error
-                                    });
+            console.log("Código de estado:", response.status); // Debug
+            console.log("Respuesta del servidor:", result); // Debug
 
             if (!response.ok) {
                 mostrarErrores(result.errors);
-                return;
+                return; 
             }
 
-            alert("Login exitoso");
-            window.location.href = "/login"; // Redirigir si el login es exitoso
+            limpiarErrores();
+            // Asegurar que la redirección ocurra
+            window.location.href = "/";
 
         } catch (error) {
             console.error("Error en la solicitud:", error);
+        } finally {
+            // Oculta el indicador de carga después de la respuesta
+            cargando.style.display = "none";
         }
-    });
+    }
 
     function mostrarErrores(errors) {
         const errorContainer = document.getElementById("errores");
-        errorContainer.innerHTML = ""; // Limpiar errores anteriores
+        errorContainer.innerHTML = ""; 
 
-        if (!errors || errors.length === 0) {
-            console.log("No hay errores que mostrar");
-            return;
-        }
+        if (!errors || errors.length === 0) return;
 
         errors.forEach(err => {
-            const div = document.createElement("div");
-            div.textContent = err.msg;
-            div.style.color = "red";
-            errorContainer.appendChild(div);
+            const li = document.createElement("li");
+            li.textContent = err.msg;
+            li.style.color = "red";
+            errorContainer.appendChild(li);
         });
+    }
 
-        console.log("Errores mostrados:", errors);
+    function limpiarErrores() {
+        document.getElementById("errores").innerHTML = ""; 
     }
 });
 
-</script>-->
+
+
+</script>
 </html>

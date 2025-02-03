@@ -3,11 +3,6 @@ import user from '../models/login.js';
 //creo el usuario si no esta creado anteriormente
 export async function crearUser(datos) { 
     try {
-        const buscarEmail = await user.findOne({ email: datos.Email });
-        if (buscarEmail) {
-            
-           return false;
-        }else{
             const nuevoUsuario = new user({
                 name: datos.name,
                 lastName: datos.lastname,
@@ -16,9 +11,16 @@ export async function crearUser(datos) {
                 password: datos.password });
             const usuarioGuardado = await nuevoUsuario.save();
             return usuarioGuardado;
-        }
     } catch (error) {
         return { success: false, message: "Error en la creación del usuario." };
+    }
+}
+
+//verifica si existe ese correo antes de crear la cuenta, si existe devuelve false(correo existente), sino, correo no existente
+export async function emailUnico(email) {
+    const buscarEmail = await user.findOne({ email: email });
+    if (buscarEmail) {
+        throw new Error("El correo ya está registrado"); // ⚠️ Lanza un error si el email existe
     }
 }
 
@@ -45,4 +47,16 @@ export async function verificarCuentarepo(id){
         {$set: {cuentaVerificada : true}}
     )
     return verificada;
+}
+
+
+//iniciar sesion 
+export async function iniciarSesionRepo(datos) {
+    const usuario = await user.findOne({ email: datos.Email });
+    // Verificar si la contraseña es correcta
+    if (usuario.password === datos.password && usuario.email === datos.Email) {
+        return true; // Credenciales correctas
+    } else {
+        return false; // Credenciales incorrectas
+    }
 }

@@ -1,10 +1,10 @@
 import { body, validationResult } from 'express-validator';
-import {loginServices, verificarCuenta, verificarCuentaId} from '../services/crearUser.js';
+import {loginServices, verificarCuenta, verificarCuentaId, emailUnicoServices, iniciarSesionServices} from '../services/crearUser.js';
 
 
 //middleware
 export const validarUsuario = [
-    body('Email').isEmail().withMessage('El correo no es válido'),
+    body('Email').isEmail().withMessage('El correo no es válido').custom(emailUnicoServices),
     body('password')
         .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres')
         .matches(/[A-Z]/).withMessage('La contraseña debe contener al menos una letra mayúscula')
@@ -19,6 +19,8 @@ export const validarUsuario = [
         next(); // Si no hay errores, continuar al controlador
     }
 ];
+
+
 
 //mando a services para crear el user
 export async function loginControllers(datos){
@@ -36,4 +38,11 @@ export async function envCorreo(user){
 export async function verificarCuentaid(id){
     const verificar = await verificarCuentaId(id);
     return verificar;
+}
+
+
+//iniciar sesion
+
+export async function IniciarSesion(datos){
+    return iniciarSesionServices(datos);
 }

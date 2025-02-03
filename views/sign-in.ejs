@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/efectos.css">
+    <title>login</title>
+</head>
+<body>
+
+    <section class="container-login">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/1690643591twitter-x-logo-png.webp/2000px-1690643591twitter-x-logo-png.webp.png" alt="">
+        <article class="login">
+            <h1>LOGIN</h1>
+            <ol id="errores">
+
+            </ol>
+            <form action="/sign-in" method="POST" class="form-login" id="formulario">
+
+                <label for="Email">E-mail</label>
+                <input type="text" id="Email" name="Email" placeholder="E-mail" required>
+
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Contraseña" required>
+
+                <div id="cargando" style="display:none;">Cargando...</div>
+                <button type="submit" id="login-btn">Login</button>
+                
+                <a href="/recover-password">¿Olvidaste tu contraseña?</a>
+                <a href="/login">login</a>
+            </form>
+            
+        </article>
+    </section>
+    
+</body>
+<script >
+document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("formulario");
+
+    formulario.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Evita el envío normal del formulario
+
+        // Muestra el indicador de carga
+        const cargando = document.getElementById("cargando");
+        cargando.style.display = "block";
+
+        const formData = new FormData(formulario);
+        const datos = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch("/sign-in", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            });
+
+            const result = await response.json();
+            console.log("Código de estado:", response.status);
+            console.log("Respuesta del servidor:", result);
+
+            if (response.ok) {
+                limpiarErrores();
+                alert("Inicio de sesión exitoso 🎉");
+                window.location.href = "/"; // Redirige tras éxito
+            } else {
+                mostrarErrores([result.mensaje]); // Captura mensaje de error del backend
+            }
+
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            mostrarErrores(["Error de conexión con el servidor"]);
+        } finally {
+            cargando.style.display = "none"; // Oculta indicador de carga
+        }
+    });
+
+    function mostrarErrores(errors) {
+        const errorContainer = document.getElementById("errores");
+        errorContainer.innerHTML = ""; 
+
+        errors.forEach(err => {
+            const li = document.createElement("li");
+            li.textContent = err;
+            li.style.color = "red";
+            errorContainer.appendChild(li);
+        });
+    }
+
+    function limpiarErrores() {
+        document.getElementById("errores").innerHTML = ""; 
+    }
+});
+</script>

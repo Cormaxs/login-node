@@ -1,5 +1,5 @@
 import express from 'express';
-import {validarUsuario, loginControllers, envCorreo, verificarCuentaid} from '../controllers/controllers.js';
+import {validarUsuario, loginControllers, envCorreo, verificarCuentaid,IniciarSesion} from '../controllers/controllers.js';
 const router = express.Router();
 
 //rutas de peticion
@@ -28,16 +28,31 @@ router.get('/recover-password', (req, res) => {
 
 router.post('/login', validarUsuario,  async (req, res)=>{
   const crearUser =  await loginControllers(req.body);
- // console.log(crearUser)
-  if(crearUser !== null){
-    const id =  crearUser._id.toString();
+  //console.log(crearUser)
+  if(crearUser){
+    //const id =  crearUser._id.toString();
     await envCorreo(crearUser);
-    res.redirect("./login?cuenta creada con exito");
+    res.status(200).json({ mensaje: 'Solicitud exitosa' });
   }else{
-    res.redirect("./login?El correo ya esta registrado, intente de nuevo");
+    return res.status(409).json({ message: "El correo ya está registrado" }); // 409 = Conflicto
   }
 })
 
+
+// iniciar sesion
+router.post('/sign-in', async(req, res)=>{
+  try {
+    const iniciar = await IniciarSesion(req.body);
+    if (iniciar) {
+        res.status(200).json({ mensaje: "Solicitud exitosa" });
+    } else {
+        res.status(409).json({ mensaje: "El correo y la contraseña no coinciden" });
+    }
+} catch (error) {
+    console.error("Error en la autenticación:", error);
+    res.status(500).json({ mensaje: "el correo no es valido" });
+}
+})
 
 //rutas de envio
 

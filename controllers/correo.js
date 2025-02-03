@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 export async function enviarCorreoIniciarSesion(user) {
+    console.log(user);
     const id = user._id.toString();
     const config = {
         host: 'mail.proyectosarg.com',
