@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
-import {loginServices, verificarCuenta, verificarCuentaId, emailUnicoServices, iniciarSesionServices} from '../services/crearUser.js';
-
+import {loginServices, verificarCuenta, verificarCuentaId, emailUnicoServices, iniciarSesionServices, recuperarC, cambioContraa} from '../services/crearUser.js';
+import {emailUnico} from '../repositories/CRUD.js';
 
 //middleware
 export const validarUsuario = [
@@ -42,7 +42,22 @@ export async function verificarCuentaid(id){
 
 
 //iniciar sesion
-
 export async function IniciarSesion(datos){
     return iniciarSesionServices(datos);
+}
+
+// recupero contraseña, verifico y envio correo de recuperacion a el gmail
+export async function recuperarContraseña(correo){
+   const correoValido = await emailUnico(correo);
+   if(correoValido){
+    return await recuperarC(correo);
+   }else{
+    return false;
+   }
+}
+
+
+//cambio la nueva contraseña desde el correo
+export async function CambioC(contraseña, correo){
+   return await cambioContraa(contraseña, correo);
 }

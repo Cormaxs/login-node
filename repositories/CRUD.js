@@ -20,7 +20,7 @@ export async function crearUser(datos) {
 export async function emailUnico(email) {
     const buscarEmail = await user.findOne({ email: email });
     if (buscarEmail) {
-        throw new Error("El correo ya está registrado"); // ⚠️ Lanza un error si el email existe
+        return true;
     }
 }
 
@@ -60,3 +60,16 @@ export async function iniciarSesionRepo(datos) {
         return false; // Credenciales incorrectas
     }
 }
+
+
+
+//recuperar contraseña 
+
+export async function cambiarContra(contraseña, correo){
+    const cambio = await user.updateMany(
+        {email: correo},
+        {$set:{password: contraseña}}
+    )
+    return cambio;
+    }
+

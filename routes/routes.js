@@ -1,5 +1,5 @@
 import express from 'express';
-import {validarUsuario, loginControllers, envCorreo, verificarCuentaid,IniciarSesion} from '../controllers/controllers.js';
+import {validarUsuario, loginControllers, envCorreo, verificarCuentaid,IniciarSesion, recuperarContraseña, CambioC} from '../controllers/controllers.js';
 const router = express.Router();
 
 //rutas de peticion
@@ -53,6 +53,34 @@ router.post('/sign-in', async(req, res)=>{
     res.status(500).json({ mensaje: "el correo no es valido" });
 }
 })
+
+
+//rtecuperar contraseña correo enviar
+router.post('/recover-password', async (req, res) => {
+  const verificar = await recuperarContraseña(req.body.Email);
+  console.log(verificar);
+  if(verificar){
+    res.redirect('/sign-in');
+  }else{
+    res.redirect('/recover-password?Correo no registrado');
+  }
+})
+
+//cambiar password desde correo
+router.get('/recuperar/:correo', (req, res)=>{
+  res.render('new-password');
+  
+})
+
+router.post('/recuperar/:correo',async (req, res)=>{
+  const {correo} = req.params;
+  const {password} = req.body;
+  console.log(password, correo)
+ const cambiar = await CambioC(password, correo)
+  res.redirect('/sign-in?cambio de contraseña exitoso');
+})
+
+
 
 //rutas de envio
 
