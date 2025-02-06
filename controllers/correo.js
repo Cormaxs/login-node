@@ -53,11 +53,11 @@ export async function enviarCorreoRecuperacion(correo) {
         html: `
             <h1>Recuperación de contraseña</h1>
             <p>Para cambiar su contraseña, ingrese al siguiente enlace:</p>
-            <a href="https://login-node-production-6343.up.railway.app/recuperar/${encodeURIComponent(correo)}" target="_blank">
+            <a href="https://login-node-production-6343.up.railway.app/recuperar/${correo}" target="_blank">
                 Recuperar contraseña
             </a>
             <p>O copie y pegue el siguiente enlace en su navegador:</p>
-            <p><b>https://login-node-production-6343.up.railway.app/recuperar/${encodeURIComponent(correo)}</b></p>
+            <p><b>https://login-node-production-6343.up.railway.app/recuperar/${correo}</b></p>
         `
     };
 

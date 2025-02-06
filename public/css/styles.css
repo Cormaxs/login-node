@@ -15,9 +15,22 @@
 
 .login{
     text-align: left;
-   
-  
- 
+}
+.login > ol{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  max-width: 350px;
+}
+.login > ol > li{
+  list-style: none;
+  font-size: clamp(16px, 5vw, 18px);
+  font-weight: 400;
+  text-align: left;
+  width: 100%;
 }
 .login>h1{
     text-align: center;
@@ -26,7 +39,7 @@
 
 .form-login{
     min-width: 250px;
-    max-width: 300px;
+    max-width: 400px;
    min-height: 350px;
    margin: auto;
    padding: 1rem; 
@@ -67,3 +80,8 @@ color: var(--btnNormal);
 text-decoration: none;
 }
 
+
+#cargando{
+  width: 100%;
+  margin: auto;
+}

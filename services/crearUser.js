@@ -1,4 +1,4 @@
-import {crearUser, guardarIdCorreo, verificarCuentarepo, emailUnico, iniciarSesionRepo, cambiarContra} from '../repositories/CRUD.js';
+import {crearUser, guardarIdCorreo, verificarCuentarepo, emailUnico, iniciarSesionRepo, cambiarContra, actualizarDatos} from '../repositories/CRUD.js';
 import {enviarCorreoIniciarSesion, enviarCorreoRecuperacion} from '../controllers/correo.js';
 
 //creo el usuario
@@ -41,7 +41,14 @@ export async function recuperarC(correo){
   return await enviarCorreoRecuperacion(correo);
 }
 
-//cambio contra desde gmail
+//cambio contraseña desde gmail
 export async function cambioContraa(contraseña, correo){
  const si = await cambiarContra(contraseña, correo)
 }
+
+//actualizar datos
+export async function updatedatos(datos){
+  return await actualizarDatos(datos);
+}
+
+

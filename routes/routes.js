@@ -1,5 +1,7 @@
 import express from 'express';
-import {validarUsuario, loginControllers, envCorreo, verificarCuentaid,IniciarSesion, recuperarContraseña, CambioC} from '../controllers/controllers.js';
+import {validarUsuario, loginControllers, envCorreo, verificarCuentaid,IniciarSesion, 
+  recuperarContraseña, CambioC, datosAct, sanitizarDatos, encriptar} from '../controllers/controllers.js';
+
 const router = express.Router();
 
 //rutas de peticion
@@ -22,15 +24,34 @@ router.get('/recover-password', (req, res) => {
     res.render("recover-password");
 })
 
+//cambiar password desde correo
+router.get('/recuperar/:correo', (req, res)=>{
+  res.render('new-password');
+  
+})
 
 
-//rutas de recepcion de datos
+//verificar cuenta por correo
+router.get('/verificar/:id', async (req, res)=>{
+  const {id} = req.params;
+const verificar = await verificarCuentaid(id);
+  res.render( `./verificarCuenta`);
+})
 
-router.post('/login', validarUsuario,  async (req, res)=>{
-  const crearUser =  await loginControllers(req.body);
-  //console.log(crearUser)
+//actualizar datos
+router.get('/actualizar', async (req, res)=>{
+ res.render('./update-datos');
+})
+
+
+//rutas de recepcion de datos --------------------------------------------------------------------------------------------
+
+//recibe formulario para crear cuenta
+router.post('/login', validarUsuario, sanitizarDatos,  async (req, res)=>{
+  const hashear = await encriptar(req.body);
+  console.log(hashear);
+  const crearUser =  await loginControllers(hashear);
   if(crearUser){
-    //const id =  crearUser._id.toString();
     await envCorreo(crearUser);
     res.status(200).json({ mensaje: 'Solicitud exitosa' });
   }else{
@@ -40,7 +61,7 @@ router.post('/login', validarUsuario,  async (req, res)=>{
 
 
 // iniciar sesion
-router.post('/sign-in', async(req, res)=>{
+router.post('/sign-in',sanitizarDatos,  async(req, res)=>{
   try {
     const iniciar = await IniciarSesion(req.body);
     if (iniciar) {
@@ -55,7 +76,7 @@ router.post('/sign-in', async(req, res)=>{
 })
 
 
-//rtecuperar contraseña correo enviar
+//recibe los datos de correo de la cuenta a recuperar contraseña, luego manda un correo
 router.post('/recover-password', async (req, res) => {
   const verificar = await recuperarContraseña(req.body.Email);
   console.log(verificar);
@@ -66,41 +87,28 @@ router.post('/recover-password', async (req, res) => {
   }
 })
 
-//cambiar password desde correo
-router.get('/recuperar/:correo', (req, res)=>{
-  res.render('new-password');
-  
-})
 
+// cambia la contraseña desde el link del correo
 router.post('/recuperar/:correo',async (req, res)=>{
+  const hashear = await encriptar(req.body);
   const {correo} = req.params;
-  const {password} = req.body;
+  const {password} = hashear;
   console.log(password, correo)
- const cambiar = await CambioC(password, correo)
+  await CambioC(password, correo)
   res.redirect('/sign-in?cambio de contraseña exitoso');
 })
 
 
 
-//rutas de envio
-
-
-
-
-
-
-
-
-//rutas de actualizacion
-
-
-
-//verificar cuenta por correo
-router.get('/verificar/:id', async (req, res)=>{
-  const {id} = req.params;
-const verificar = await verificarCuentaid(id);
-  res.render( `./verificarCuenta`);
+//actualizar datos
+router.post('/actualizar', sanitizarDatos, async (req, res)=>{
+  const hashear = await encriptar(req.body);
+  const datos = hashear;
+  console.log(await datosAct(datos));
 })
+
+
+
 
 export default router;
 

@@ -1,4 +1,6 @@
 import user from '../models/login.js';
+import {copararHash} from '../controllers/controllers.js';
+
 
 //creo el usuario si no esta creado anteriormente
 export async function crearUser(datos) { 
@@ -16,7 +18,7 @@ export async function crearUser(datos) {
     }
 }
 
-//verifica si existe ese correo antes de crear la cuenta, si existe devuelve false(correo existente), sino, correo no existente
+//verifica si existe ese correo antes de crear la cuenta
 export async function emailUnico(email) {
     const buscarEmail = await user.findOne({ email: email });
     if (buscarEmail) {
@@ -52,19 +54,25 @@ export async function verificarCuentarepo(id){
 
 //iniciar sesion 
 export async function iniciarSesionRepo(datos) {
+    try{
     const usuario = await user.findOne({ email: datos.Email });
+
+    const ver = await copararHash(datos.password, usuario.password);
     // Verificar si la contraseña es correcta
-    if (usuario.password === datos.password && usuario.email === datos.Email) {
+    if(ver && usuario.email === datos.Email) {
         return true; // Credenciales correctas
     } else {
         return false; // Credenciales incorrectas
     }
+    }catch(err){
+        return err;
+    }
+    
 }
 
 
 
-//recuperar contraseña 
-
+//recuperar contraseña, la cambio desde el link del correo
 export async function cambiarContra(contraseña, correo){
     const cambio = await user.updateMany(
         {email: correo},
@@ -73,3 +81,24 @@ export async function cambiarContra(contraseña, correo){
     return cambio;
     }
 
+
+//actualizar datos
+export async function actualizarDatos(datos) {
+    try {
+        // Intentar actualizar el usuario basado en su email
+        const actualizar = await user.updateOne(
+            { email: datos.Email }, // Buscar por correo
+            { $set: datos } // Actualizar los campos con los nuevos datos
+        );
+
+        // Verificar si se actualizó correctamente
+        if (actualizar.matchedCount === 0) {
+            return { success: false, message: "Usuario no encontrado." };
+        }
+
+        return { success: true, message: "Usuario actualizado correctamente." };
+    } catch (error) {
+        console.error("Error al actualizar usuario:", error);
+        return { success: false, message: "Error en la actualización del usuario." };
+    }
+}
